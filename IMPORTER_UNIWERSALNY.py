@@ -2,6 +2,7 @@ import subprocess
 import os
 import json
 import shutil
+import sys
 
 class UniversalImporter:
     def __init__(self, script_directory, json_filename):
@@ -33,9 +34,17 @@ class UniversalImporter:
             print(f"Instrukcje dla skryptu: {instructions}")
             input("Naciśnij Enter, aby kontynuować...")
             script_path = os.path.join(self.script_directory, script_name)
-            print(f"Uruchamianie skryptu: {script_name}")
-            subprocess.run(['python', script_path], shell=True)
-            print(f"Zakończono uruchamianie skryptu: {script_name}")
+            self.execute_script(script_path)
+
+    def execute_script(self, script_path):
+        original_cwd = os.getcwd()
+        os.chdir(os.path.dirname(script_path))
+        try:
+            subprocess.run(['python', os.path.basename(script_path)], check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Wystąpił błąd podczas uruchamiania skryptu: {e}")
+        finally:
+            os.chdir(original_cwd)
 
     def copy_xml_files(self):
         xml_files = [f for f in os.listdir(self.script_directory) if f.endswith('.xml')]
