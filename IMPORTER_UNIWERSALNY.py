@@ -52,10 +52,10 @@ class UniversalImporter:
             print(f"Plik {filename} nie istnieje w bieżącym katalogu.")
 
     def choose_and_run(self):
-        print("IMPORTER UNIWERSALNY. UTWÓRZ PLIK wykazy.xlsx")
-        choice = input("Czy wczytać plik wykazy.xlsx? [y/n]: ").lower()
+        print("IMPORTER UNIWERSALNY. UTWÓRZ PLIK wykaz.xlsx")
+        choice = input("Czy wczytać plik wykaz.xlsx? [y/n]: ").lower()
         if choice == 'y':
-            self.copy_file_to_importers('wykazy.xlsx')
+            self.copy_file_to_importers('wykaz.xlsx')
         elif choice == 'n':
             print("Zakończenie działania programu.")
             return
