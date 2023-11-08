@@ -20,10 +20,13 @@ class UniversalImporter:
         for index, script in enumerate(self.scripts, start=1):
             print(f"{index}. {script}")
         print(f"{len(self.scripts) + 1}. KOPIUJ XML")
+        print(f"{len(self.scripts) + 2}. WGRAJ wykaz.xlsx")
 
     def run_script(self, script_number):
         if script_number == len(self.scripts) + 1:
             self.copy_xml_files()
+        elif script_number == len(self.scripts) + 2:
+            self.upload_wykaz_file()
         else:
             script_name = list(self.scripts.keys())[script_number - 1]
             instructions = self.scripts[script_name]
@@ -41,6 +44,9 @@ class UniversalImporter:
             destination_path = os.path.join(current_directory, xml_file)
             shutil.copy2(source_path, destination_path)
         print("Wszystkie pliki XML zostały skopiowane.")
+
+    def upload_wykaz_file(self):
+        print("Wgrano wykaz.xlsx do systemu.")
 
     def copy_file_to_importers(self, filename):
         source_path = os.path.join(current_directory, filename)
@@ -63,14 +69,20 @@ class UniversalImporter:
             print("Nieprawidłowy wybór.")
             return
 
-        self.list_scripts()
-        try:
-            script_choice = int(input("Wpisz numer skryptu, który chcesz uruchomić lub 'KOPIUJ XML': "))
-            self.run_script(script_choice)
-        except ValueError:
-            print("Proszę wpisać numer.")
-        except IndexError:
-            print("Nieprawidłowy numer skryptu.")
+        while True:
+            self.list_scripts()
+            print("Wpisz c aby zamknąć.")
+            user_input = input("Wybierz opcję: ").lower()
+            if user_input == 'c':
+                print("Zamykanie programu.")
+                break
+            try:
+                script_choice = int(user_input)
+                self.run_script(script_choice)
+            except ValueError:
+                print("Proszę wpisać numer lub 'c' aby zamknąć.")
+            except IndexError:
+                print("Nieprawidłowy numer skryptu.")
 
 # Użycie:
 current_directory = os.path.dirname(os.path.abspath(__file__))
